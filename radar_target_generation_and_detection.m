@@ -1,6 +1,6 @@
 % SFND Radar Generation and Detection (using MATLAB)
 
-clear all
+clear all;
 clc;
 
 %% Radar Specifications 
@@ -13,30 +13,29 @@ clc;
 % Speed of light = 3e8 % m/s
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 %% User Defined Range and Velocity of target
 % *%TODO* :
 % define the target's initial position and velocity. 
 % Note : Velocity remains contant
 
-R = 110;    % target's initial position
-v = 20;     % target's initial velocity
+R = 110;     % target's initial position [m]
+v = -20;     % target's initial velocity [m/s]
 
 %% FMCW Waveform Generation
 
 % *%TODO* :
 % Design the FMCW waveform by giving the specs of each of its parameters.
-% Calculate the Bandwidth (B), Chirp Time (Tchirp) and Slope (slope) of the FMCW
-% chirp using the requirements above.
+% Calculate the Bandwidth (B), Chirp Time (Tchirp) and Slope (slope) of the 
+% FMCW chirp using the requirements above.
 
 % Bandwith for each chirp for a given resolution
 c = 3e8;    % speed of light [m/s]
 d_res = 1;  % range resolution [m]
 B = c/(2*d_res);
 
+R_max = 200;    % maximum range [m]
 % Sweep time for each chirp is defined with the rule by 5.5 times of round
 % trip time for Maximum Range
-R_max = 200;    % maximum range [m]
 Tchirp = 5.5*2*(R_max)/c;
 slope = B / Tchirp;
 
@@ -73,11 +72,12 @@ for i=1:length(t)
     % For each time stamp update the Range of the Target 
     % for constant velocity. 
     r_t(i) = R + v*t(i);
+    % delayed time
     td(i) = (2*r_t(i))/c;
     
     % *%TODO* :
-    % For each time sample we need update the transmitted and
-    % received signal. 
+    % For each time sample we need update the transmitted
+    % and received signal. 
     Tx(i)   = cos(2*pi*(fc*t(i)+ (slope*t(i)^2)/2));
     Rx(i)   = cos(2*pi*(fc*(t(i)-td(i))+ (slope*(t(i)-td(i))^2)/2));
 end
@@ -89,17 +89,16 @@ Mix = Tx.*Rx;
 
 %% RANGE MEASUREMENT
 
-
  % *%TODO* :
 % reshape the vector into Nr*Nd array. Nr and Nd here would also define 
 % the size of Range and Doppler FFT respectively.
 Mix = reshape(Mix,[Nr,Nd]);
 
  % *%TODO* :
-% run the FFT on the beat signal along the range bins dimension (Nr) and
-% normalize.
+% run the FFT on the beat signal along the range bins dimension (Nr) 
+% and normalize.
 Y = fft(Mix,[],1); % Y = fft(Mix,Nr);
-P = Y./max(Y);
+P = Y./Nr;
 
  % *%TODO* :
 % Take the absolute value of FFT output
@@ -110,13 +109,11 @@ P2 = abs(P);
 % Hence we throw out half of the samples.
 P1 = P2(1:Nr/2+1);
 
+ % *%TODO* : 
+% plot FFT output 
+figure ('Name','Range from First FFT');plot(P1) 
 %plotting the range
-figure ('Name','Range from First FFT')
-
- % *%TODO* :
- % plot FFT output 
-plot(P1) 
-axis ([0 200 0 1]);
+axis ([0 200 0 0.5]);
 
 % %% RANGE DOPPLER RESPONSE
 % % The 2D FFT implementation is already provided here. This will run a 2DFFT
