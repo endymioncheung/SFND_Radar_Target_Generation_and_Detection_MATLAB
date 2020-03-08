@@ -54,12 +54,12 @@ Nd = 128;                   % #of doppler cells OR #of sent periods % number of 
 % chirp
 t = linspace(0,Nd*Tchirp,Nr*Nd); %total time for samples
 
-%Creating the vectors for Tx, Rx and Mix based on the total samples input.
+% Creating the vectors for Tx, Rx and Mix based on the total samples input.
 Tx = zeros(1,length(t));    % transmitted signal
 Rx = zeros(1,length(t));    % received signal
 Mix = zeros(1,length(t));   % beat signal
 
-%Similar vectors for range_covered and time delay.
+% Similar vectors for range_covered and time delay.
 r_t = zeros(1,length(t));
 td = zeros(1,length(t));
 
@@ -150,8 +150,8 @@ figure('Name','2D FFT output - Range Doppler Map'),surf(doppler_axis,range_axis,
 
 % *%TODO* :
 % Select the number of Training Cells in both dimensions (range,doppler)
-Tr = 7; % number of training cells for range
-Td = 7; % number of training cells for doppler 
+Tr = 100; % number of training cells for range
+Td = 100; % number of training cells for doppler 
 
 % *%TODO* :
 % Select the number of Guard Cells in both dimensions around the Cell Under 
