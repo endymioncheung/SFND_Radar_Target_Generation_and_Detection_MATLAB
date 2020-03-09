@@ -150,8 +150,8 @@ figure('Name','2D FFT output - Range Doppler Map'),surf(doppler_axis,range_axis,
 
 % *%TODO* :
 % Select the number of Training Cells in both dimensions (range,doppler)
-Tr = 100; % number of training cells for range
-Td = 100; % number of training cells for doppler 
+Tr = 7; % number of training cells for range
+Td = 7; % number of training cells for doppler 
 
 % *%TODO* :
 % Select the number of Guard Cells in both dimensions around the Cell Under 
